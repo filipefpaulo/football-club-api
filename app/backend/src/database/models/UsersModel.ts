@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
-class users extends Model {
+class UsersModel extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -19,7 +19,7 @@ class users extends Model {
   // }
 }
 
-users.init(
+UsersModel.init(
   {
     id: {
       allowNull: false,
@@ -53,4 +53,4 @@ users.init(
   },
 );
 
-export default users;
+export default UsersModel;
