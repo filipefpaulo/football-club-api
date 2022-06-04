@@ -12,8 +12,6 @@ export default class {
   }
 
   init() {
-    return this.router
-      .get('/', (_req, res) => res.status(200).send('Ok'))
-      .use('/login', this.loginRoute.init());
+    return this.router.use('/login', this.loginRoute.init());
   }
 }
