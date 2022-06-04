@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as cors from 'cors';
 import ErrorMiddleware from './middlewares/ErrorMiddleware';
 import Routes from './routes';
-import 'express-async-errors';
 
 class App {
   public app: express.Express;
@@ -26,16 +25,17 @@ class App {
       next();
     };
 
-    this.app.use(accessControl).use(express.json()).use(cors());
+    const { app } = this;
+
+    app.use(accessControl).use(express.json()).use(cors());
+
+    app.use(this.routes.init());
+
+    app.use(ErrorMiddleware);
   }
 
   public start(PORT: string | number): void {
-    const { app } = this;
-
-    app.use(this.routes.init());
-    app.use(ErrorMiddleware);
-
-    app.listen(PORT, () => console.log(`Listen on ${PORT}`));
+    this.app.listen(PORT, () => console.log(`Listen on ${PORT}`));
   }
 }
 
