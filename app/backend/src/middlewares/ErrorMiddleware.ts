@@ -10,5 +10,6 @@ export default function ErrorMiddleware(
   if (err.type === 'ErrorHandler') {
     return res.status(err.statusCode).json({ message: err.message });
   }
+  console.error(err.message);
   return res.status(500).json({ message: 'Internal server error' });
 }
