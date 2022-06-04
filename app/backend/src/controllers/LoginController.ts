@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import ErrorHandler from '../helpers/ErrorHandler';
 import LoginService from '../services/LoginService';
 
 export default class LoginController {
@@ -11,6 +12,11 @@ export default class LoginController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
+
+      if (!email || !password) {
+        throw new ErrorHandler('All fields must be filled', 400);
+      }
+
       const user = await this.loginService.login(email, password);
       return res.status(200).json(user);
     } catch (err) {
@@ -18,9 +24,15 @@ export default class LoginController {
     }
   }
 
-  validate(_req: Request, res: Response) {
-    const user = this.loginService;
-    console.log(user);
-    return res.status(200).send('ValidateController - Ok');
+  async validate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const token: string | undefined = req.headers.authorization;
+
+      const role = await this.loginService.validate(token);
+
+      return res.status(200).json({ role });
+    } catch (err) {
+      next(err);
+    }
   }
 }

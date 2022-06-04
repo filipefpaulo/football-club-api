@@ -12,18 +12,11 @@ export default class LoginRoute {
 
   init() {
     return this.route
-      .post(
-        '/',
-        (
-          req: express.Request,
-          res: express.Response,
-          next: express.NextFunction,
-        ) => {
-          this.loginController.login(req, res, next);
-        },
-      )
-      .get('/validate', (req: express.Request, res: express.Response) => {
-        this.loginController.validate(req, res);
+      .post('/', (req, res, next) => {
+        this.loginController.login(req, res, next);
+      })
+      .get('/validate', (req, res, next) => {
+        this.loginController.validate(req, res, next);
       });
   }
 }
