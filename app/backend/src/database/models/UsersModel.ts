@@ -12,7 +12,7 @@ class UsersModel extends Model {
   public username: string;
   public role: string;
   public email: string;
-  public password: string;
+  public password?: string;
 
   // static associate(models) {
   //   // define association here
