@@ -27,9 +27,11 @@ class App {
 
     const { app } = this;
 
-    app.use(accessControl).use(express.json()).use(cors());
+    app.use(accessControl);
+    app.use(express.json());
+    app.use(cors());
 
-    app.use(this.routes.init());
+    app.use(this.routes.router);
 
     app.use(ErrorMiddleware);
   }
