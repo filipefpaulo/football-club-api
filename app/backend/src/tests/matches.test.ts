@@ -7,7 +7,7 @@ import { app } from '../app';
 
 import { Response } from 'superagent';
 import MatchesModel from '../database/models/MatchesModel';
-import { matchesMock } from './mocks/matches.mock';
+import { matchBody, matchesMock } from './mocks/matches.mock';
 
 chai.use(chaiHttp);
 
@@ -51,5 +51,37 @@ describe('/matches', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.deep.equal(matchesMockProgressFalse);
+  });
+
+  it('createMatch', async () => {
+    const matchResult = { id: 666, ...matchBody.OK };
+
+    sinon.stub(MatchesModel, 'create').resolves(matchResult as any);
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches?inProgress=false')
+      .send(matchBody.OK);
+    (MatchesModel.create as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body).to.be.deep.equal(matchResult);
+  });
+  it('createMatch - Undefined <team>', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches?inProgress=false')
+      .send(matchBody.withoutHomeTeam);
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal('Teams ids is required');
+  });
+  it('createMatch - <inProgress = false>', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches?inProgress=false')
+      .send(matchBody.withFalseInProgress);
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal('Invalid progress');
   });
 });

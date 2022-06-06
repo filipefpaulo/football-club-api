@@ -21,7 +21,7 @@ export default class MatchesRoute {
       this.matchesController.getAllMatches(req, res, next);
     });
     this._route.post('/', (req, res, next) => {
-      this.matchesController.createMatche(req, res, next);
+      this.matchesController.createMatch(req, res, next);
     });
   }
 }

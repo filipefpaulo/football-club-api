@@ -7,18 +7,19 @@ export default class MatchesService {
   private matchesModel = MatchesModel;
   private teamsModel = TeamsModel;
 
-  // prettier-ignore
-  async getAllMatches(progress: string | undefined) {
-    let matches;
-    if (progress === undefined) {
-      matches = await this.matchesModel.findAll({
-        include: [
-          { model: TeamsModel, as: 'teamHome', attributes: { exclude: ['id'] } },
-          { model: TeamsModel, as: 'teamAway', attributes: { exclude: ['id'] } },
-        ],
-      });
-    }
-    matches = await this.matchesModel.findAll({
+  async getAllMatches() {
+    const matches = await this.matchesModel.findAll({
+      include: [
+        { model: TeamsModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+        { model: TeamsModel, as: 'teamAway', attributes: { exclude: ['id'] } },
+      ],
+    });
+
+    return matches;
+  }
+
+  async getByProgress(progress: string) {
+    const matches = await this.matchesModel.findAll({
       where: { inProgress: progress },
       include: [
         { model: TeamsModel, as: 'teamHome', attributes: { exclude: ['id'] } },
@@ -30,7 +31,7 @@ export default class MatchesService {
   }
 
   // prettier-ignore
-  async createMatche({
+  async createMatch({
     homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress,
   }: IMatchRequest) {
     const teams = await this.teamsModel.findAll({

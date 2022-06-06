@@ -672,3 +672,27 @@ export const matchesMock = [
     },
   },
 ];
+
+export const matchBody = {
+  OK: {
+    homeTeam: 1,
+    awayTeam: 2,
+    homeTeamGoals: 3,
+    awayTeamGoals: 4,
+    inProgress: true,
+  },
+  withoutHomeTeam: {
+    homeTeam: 0,
+    awayTeam: 2,
+    homeTeamGoals: 3,
+    awayTeamGoals: 4,
+    inProgress: true,
+  },
+  withFalseInProgress: {
+    homeTeam: 1,
+    awayTeam: 2,
+    homeTeamGoals: 3,
+    awayTeamGoals: 4,
+    inProgress: false,
+  },
+};
