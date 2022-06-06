@@ -2,16 +2,22 @@ import * as express from 'express';
 import LoginController from '../controllers/LoginController';
 
 export default class LoginRoute {
-  private route: express.Router;
+  private _route: express.Router;
   private loginController: LoginController;
 
   constructor() {
-    this.route = express.Router();
+    this._route = express.Router();
     this.loginController = new LoginController();
+
+    this.init();
   }
 
-  init() {
-    return this.route
+  get route() {
+    return this._route;
+  }
+
+  private init() {
+    this._route
       .post('/', (req, res, next) => {
         this.loginController.login(req, res, next);
       })
