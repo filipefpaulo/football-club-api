@@ -1,17 +1,31 @@
 import * as express from 'express';
 import LoginRoute from './LoginRoute';
+import MatchesRoute from './MatchesRoute';
+import TeamsRoute from './TeamsRoute';
 
 export default class {
-  private router: express.Router;
+  private _router: express.Router;
   private loginRoute: LoginRoute;
+  private teamsRoute: TeamsRoute;
+  private matchesRoute: MatchesRoute;
 
   constructor() {
-    this.router = express.Router();
+    this._router = express.Router();
 
     this.loginRoute = new LoginRoute();
+    this.teamsRoute = new TeamsRoute();
+    this.matchesRoute = new MatchesRoute();
+
+    this.init();
   }
 
-  init() {
-    return this.router.use('/login', this.loginRoute.init());
+  get router() {
+    return this._router;
+  }
+
+  private init() {
+    this._router.use('/login', this.loginRoute.route);
+    this._router.use('/teams', this.teamsRoute.route);
+    this._router.use('/matches', this.matchesRoute.route);
   }
 }
