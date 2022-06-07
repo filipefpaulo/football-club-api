@@ -99,6 +99,6 @@ describe('/login', () => {
       .set({ authorization: token });
 
     expect(chaiHttpResponse.status).to.be.equal(200);
-    expect(chaiHttpResponse.body.role).to.be.equal('King of hell');
+    expect(chaiHttpResponse.body).to.be.equal('King of hell');
   });
 });
