@@ -17,12 +17,20 @@ let chaiHttpResponse: Response;
 
 describe('/teams', () => {
   it('getAllTeams', async () => {
-    sinon.stub(TeamsModel, 'findOne').resolves(teamsMock as any);
+    sinon.stub(TeamsModel, 'findAll').resolves(teamsMock as any);
     chaiHttpResponse = await chai.request(app).get('/teams');
-    (TeamsModel.findOne as sinon.SinonStub).restore();
+    (TeamsModel.findAll as sinon.SinonStub).restore();
 
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.deep.equal(teamsMock);
+  });
+  it('getAllTeams <fail>', async () => {
+    sinon.stub(TeamsModel, 'findAll').resolves([]);
+    chaiHttpResponse = await chai.request(app).get('/teams');
+    (TeamsModel.findAll as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal('No teams found');
   });
   it('getById - Success', async () => {
     sinon.stub(TeamsModel, 'findByPk').resolves(teamsMock[0] as any);

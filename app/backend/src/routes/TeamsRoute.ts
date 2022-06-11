@@ -17,11 +17,9 @@ export default class TeamsRoute {
   }
 
   private init() {
-    this._route.get('/', (req, res, next) => {
-      this.teamsController.getAllTeams(req, res, next);
-    });
-    this._route.get('/:id', (req, res, next) => {
-      this.teamsController.getById(req, res, next);
-    });
+    const controller = this.teamsController;
+
+    this._route.get('/', controller.getAllTeams.bind(controller));
+    this._route.get('/:id', controller.getById.bind(controller));
   }
 }

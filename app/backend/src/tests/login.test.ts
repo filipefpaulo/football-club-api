@@ -101,4 +101,15 @@ describe('/login', () => {
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.equal('King of hell');
   });
+  it('/validate - Invalid <token>', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .set({ authorization: 'tokenInvalido' });
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal(
+      'Expired or invalid token',
+    );
+  });
 });

@@ -24,6 +24,14 @@ describe('/matches', () => {
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.deep.equal(matchesMock);
   });
+  it('getAllMatches <fail>', async () => {
+    sinon.stub(MatchesModel, 'findAll').resolves([]);
+    chaiHttpResponse = await chai.request(app).get('/matches');
+    (MatchesModel.findAll as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal('No matches found');
+  });
   it('getAllMatches <inProgress = true>', async () => {
     const matchesMockProgressTrue = matchesMock.filter(
       (match) => match.inProgress === true,
@@ -63,7 +71,7 @@ describe('/matches', () => {
       .send(matchBody.OK);
     (MatchesModel.create as sinon.SinonStub).restore();
 
-    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.status).to.be.equal(201);
     expect(chaiHttpResponse.body).to.be.deep.equal(matchResult);
   });
   it('createMatch - Undefined <team>', async () => {
@@ -83,5 +91,37 @@ describe('/matches', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body.message).to.be.equal('Invalid progress');
+  });
+  it('createMatch - <homeTeam = awaiTeam>', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches?inProgress=false')
+      .send(matchBody.withSameTeams);
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal(
+      'It is not possible to create a match with two equal teams',
+    );
+  });
+  it('createMatch - Invalid <team>', async () => {
+    sinon.stub(MatchesModel, 'findAll').resolves([]);
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches?inProgress=false')
+      .send(matchBody.withInvalidTeam);
+    (MatchesModel.findAll as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal(
+      'There is no team with such id!',
+    );
+  });
+  it('finishMatch', async () => {
+    sinon.stub(MatchesModel, 'update').resolves('ok' as any);
+    chaiHttpResponse = await chai.request(app).patch('/matches/1/finish');
+    (MatchesModel.update as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body.message).to.be.equal('Finished');
   });
 });

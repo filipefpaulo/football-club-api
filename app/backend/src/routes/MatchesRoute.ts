@@ -17,11 +17,11 @@ export default class MatchesRoute {
   }
 
   private init() {
-    this._route.get('/', (req, res, next) => {
-      this.matchesController.getAllMatches(req, res, next);
-    });
-    this._route.post('/', (req, res, next) => {
-      this.matchesController.createMatch(req, res, next);
-    });
+    const controller = this.matchesController;
+
+    this._route.get('/', controller.getAllMatches.bind(controller));
+    this._route.post('/', controller.createMatch.bind(controller));
+    this._route.patch('/:id', controller.updateMatch.bind(controller));
+    this._route.patch('/:id/finish', controller.finishMatch.bind(controller));
   }
 }

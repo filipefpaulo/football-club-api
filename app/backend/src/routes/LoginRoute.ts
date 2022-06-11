@@ -17,12 +17,9 @@ export default class LoginRoute {
   }
 
   private init() {
-    this._route
-      .post('/', (req, res, next) => {
-        this.loginController.login(req, res, next);
-      })
-      .get('/validate', (req, res, next) => {
-        this.loginController.validate(req, res, next);
-      });
+    const controller = this.loginController;
+
+    this._route.post('/', controller.login.bind(controller));
+    this._route.get('/validate', controller.validate.bind(controller));
   }
 }

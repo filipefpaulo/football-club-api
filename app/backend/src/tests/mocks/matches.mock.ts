@@ -695,4 +695,18 @@ export const matchBody = {
     awayTeamGoals: 4,
     inProgress: false,
   },
+  withSameTeams: {
+    homeTeam: 2,
+    awayTeam: 2,
+    homeTeamGoals: 3,
+    awayTeamGoals: 4,
+    inProgress: true,
+  },
+  withInvalidTeam: {
+    homeTeam: 666,
+    awayTeam: 2,
+    homeTeamGoals: 3,
+    awayTeamGoals: 4,
+    inProgress: true,
+  },
 };
