@@ -20,5 +20,9 @@ export default class LeaderboardRoute {
     const controller = this.leaderboardController;
 
     this._route.get('/', controller.getClassification.bind(controller));
+    this._route.get(
+      '/:type',
+      controller.getClassificationByType.bind(controller),
+    );
   }
 }
