@@ -10,5 +10,4 @@ export interface IUpdateMatchRequest {
   id: number;
   homeTeamGoals: number;
   awayTeamGoals: number;
-  inProgress?: boolean;
 }

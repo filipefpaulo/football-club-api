@@ -710,3 +710,10 @@ export const matchBody = {
     inProgress: true,
   },
 };
+
+export const updateMatchBody = {
+  ok: {
+    homeTeamGoals: 10,
+    awayTeamGoals: 5,
+  },
+};

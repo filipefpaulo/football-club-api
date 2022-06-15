@@ -7,7 +7,7 @@ import { app } from '../app';
 
 import { Response } from 'superagent';
 import MatchesModel from '../database/models/MatchesModel';
-import { matchBody, matchesMock } from './mocks/matches.mock';
+import { matchBody, matchesMock, updateMatchBody } from './mocks/matches.mock';
 
 chai.use(chaiHttp);
 
@@ -116,6 +116,18 @@ describe('/matches', () => {
       'There is no team with such id!',
     );
   });
+  it('updateMatch', async () => {
+    sinon.stub(MatchesModel, 'update').resolves('ok' as any);
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/1')
+      .send(updateMatchBody.ok);
+    (MatchesModel.update as sinon.SinonStub).restore();
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body).to.be.equal('Partida atualizada');
+  });
+
   it('finishMatch', async () => {
     sinon.stub(MatchesModel, 'update').resolves('ok' as any);
     chaiHttpResponse = await chai.request(app).patch('/matches/1/finish');
