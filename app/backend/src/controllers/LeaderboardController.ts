@@ -3,6 +3,7 @@ import LeaderboardService from '../services/LeaderboardService';
 
 export default class LeaderboardController {
   private leaderboardService = new LeaderboardService();
+
   async getClassification(_req: Request, res: Response, next: NextFunction) {
     try {
       const classification = await this.leaderboardService.getClassification();
