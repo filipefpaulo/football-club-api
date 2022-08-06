@@ -1,4 +1,4 @@
-import UsersModel from '../../database/models/UsersModel';
+import UsersModel from '../../src/database/models/UsersModel';
 
 export const userMock = {
   id: 666,

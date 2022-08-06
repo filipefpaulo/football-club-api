@@ -3,9 +3,9 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { app } from '../app';
+import { app } from '../src/app';
 
-import sequelize from '../database/models';
+import sequelize from '../src/database/models';
 
 import { Response } from 'superagent';
 import {

@@ -3,10 +3,10 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { app } from '../app';
+import { app } from '../src/app';
 
 import { Response } from 'superagent';
-import MatchesModel from '../database/models/MatchesModel';
+import MatchesModel from '../src/database/models/MatchesModel';
 import { matchBody, matchesMock, updateMatchBody } from './mocks/matches.mock';
 
 chai.use(chaiHttp);
